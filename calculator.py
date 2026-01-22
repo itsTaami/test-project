@@ -1,60 +1,54 @@
-"""Basic Calculator Application"""
+"""Basic Calculator Application - Streamlit Version"""
+
+import streamlit as st
+
 
 def add(a, b):
     return a + b
 
+
 def subtract(a, b):
     return a - b
 
+
 def multiply(a, b):
     return a * b
+
 
 def divide(a, b):
     if b == 0:
         return "Error: Division by zero"
     return a / b
 
-def calculator():
-    print("Basic Calculator")
-    print("-" * 20)
-    print("Operations:")
-    print("1. Add")
-    print("2. Subtract")
-    print("3. Multiply")
-    print("4. Divide")
-    print("5. Exit")
 
-    while True:
-        print()
-        choice = input("Select operation (1-5): ")
+st.title("Basic Calculator")
 
-        if choice == '5':
-            print("Goodbye!")
-            break
+col1, col2 = st.columns(2)
 
-        if choice not in ('1', '2', '3', '4'):
-            print("Invalid choice. Please try again.")
-            continue
+with col1:
+    num1 = st.number_input("First number", value=0.0)
 
-        try:
-            num1 = float(input("Enter first number: "))
-            num2 = float(input("Enter second number: "))
-        except ValueError:
-            print("Invalid input. Please enter numbers only.")
-            continue
+with col2:
+    num2 = st.number_input("Second number", value=0.0)
 
-        if choice == '1':
-            result = add(num1, num2)
-            print(f"{num1} + {num2} = {result}")
-        elif choice == '2':
-            result = subtract(num1, num2)
-            print(f"{num1} - {num2} = {result}")
-        elif choice == '3':
-            result = multiply(num1, num2)
-            print(f"{num1} * {num2} = {result}")
-        elif choice == '4':
-            result = divide(num1, num2)
-            print(f"{num1} / {num2} = {result}")
+operation = st.selectbox(
+    "Select operation",
+    ["Add", "Subtract", "Multiply", "Divide"]
+)
 
-if __name__ == "__main__":
-    calculator()
+if st.button("Calculate"):
+    if operation == "Add":
+        result = add(num1, num2)
+        st.success(f"{num1} + {num2} = {result}")
+    elif operation == "Subtract":
+        result = subtract(num1, num2)
+        st.success(f"{num1} - {num2} = {result}")
+    elif operation == "Multiply":
+        result = multiply(num1, num2)
+        st.success(f"{num1} * {num2} = {result}")
+    elif operation == "Divide":
+        result = divide(num1, num2)
+        if isinstance(result, str):
+            st.error(result)
+        else:
+            st.success(f"{num1} / {num2} = {result}")
